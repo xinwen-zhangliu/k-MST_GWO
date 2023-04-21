@@ -10,6 +10,9 @@ pub struct GWO {
     vertices: Vec<Vertex>,
 }
 
+type Type = Uniform<f64>;
+
+
 impl GWO {
     pub fn new(population: usize, vertices: Vec<Vertex>, k: usize) -> Self {
         GWO {
@@ -24,11 +27,27 @@ impl GWO {
         // let mut beta = vec![Vertex(0.0, 0.0, 0); self.k];
         // let mut delta = vec![Vertex(0.0, 0.0, 0); self.k];
 
-        let mut r1 = StdRng::seed_from_u64(1);
-        let mut r2 = StdRng::seed_from_u64(2);
-        //let mut r3 = StdRng::seed_from_u64(3);
-        let mut uniform = Uniform::new(0.0, 1.0);
+
+       
+        let r1 = StdRng::seed_from_u64(1);
+        let r2 = StdRng::seed_from_u64(2);
+       
+        let uniform = Uniform::new(0.0, 1.0);
         let mut iter = 0;
+
+        let assign_A = move |a : f64, r1 : StdRng, uniform : Type| {2.0 * a * r1.sample(uniform) - a}; 
+        let mut A : Vec<f64> = vec![0.0f64; 3];
+        for mut a in A {
+            a = assign_A(a,r1,uniform);
+        }
+
+        let assign_C = | r2 : StdRng, uniform : Type| {2.0 * r2.sample(uniform) }; 
+        let mut C : Vec<f64> = vec![0.0f64; 3];
+        for c in C {
+            c = assign_C(r2,uniform);
+        }
+        
+
 
         let A1 = 2.0 * a * r1.sample(uniform) - a;
         let C1 = 2.0 * r2.sample(uniform);
