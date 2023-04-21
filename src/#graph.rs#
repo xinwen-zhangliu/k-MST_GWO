@@ -1,0 +1,13 @@
+
+
+pub(crate) struct Tree{
+    adjacencies : Vec<Vec<f64>>,
+}
+
+impl Tree{
+    pub fn new(vertices : Vec<Point>) -> Self{
+        Tree {
+            adjacencies
+        }
+    }
+}
