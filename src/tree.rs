@@ -6,6 +6,12 @@ use libm::{pow, sqrt};
 pub struct Vertex(pub f64, pub f64, pub usize);
 
 impl Vertex {
+    /// Constructor that initializes all values in zeros
+    pub fn default() -> Self {
+        Vertex(0.0, 0.0, 0)
+    }
+
+    /// Equals function that checks if two vetices are equal using float partial comp
     pub fn equals(v1: &Vertex, v2: &Vertex) -> bool {
         approx_eq!(f64, v1.0, v2.0, ulps = 4) && approx_eq!(f64, v1.1, v2.1, ulps = 4)
     }
@@ -36,6 +42,10 @@ impl Edge {
             && (Vertex::equals(&e1.u, &e2.u) || Vertex::equals(&e1.u, &e2.v))
             && (Vertex::equals(&e1.v, &e2.u) || Vertex::equals(&e1.v, &e2.v))
     }
+
+    pub fn get_weight(&self) -> f64 {
+        self.w
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -46,17 +56,31 @@ pub struct Tree {
     weight: f64,
     parent: Vec<usize>,
     rank: Vec<usize>,
+    mst : Vec<Edge>
 }
 
 impl Tree {
-    pub fn new(vertices: Vec<Vertex>, k: usize) -> Self {
+    pub fn new(vertices: &Vec<Vertex>, k: usize) -> Self {
         Tree {
             k,
-            vertices,
+            vertices: vertices.clone(),
             edges: vec![Edge::default(); k * (k - 1) / 2],
             weight: 0.0,
             parent: vec![k; k],
             rank: vec![1; k],
+            mst : vec![Edge::default(); k-1]
+        }
+    }
+
+    pub fn default() -> Self {
+        Tree {
+            k: 0,
+            vertices: Vec::new(),
+            edges: Vec::new(),
+            weight: 0.0,
+            parent: Vec::new(),
+            rank: Vec::new(),
+            mst: Vec::new()
         }
     }
 
@@ -64,6 +88,10 @@ impl Tree {
         for i in 0..self.k {
             self.vertices[i].2 = i;
         }
+    }
+
+    pub fn get_num_edges(&self) -> usize {
+        self.edges.len()
     }
 
     fn generate_graph(&mut self) {
@@ -110,9 +138,9 @@ impl Tree {
         }
     }
 
-    fn add_edge(&mut self, u: Vertex, v: Vertex, w: f64) {
-        self.edges.push(Edge { u, v, w });
-    }
+    // fn overwrite_edge(&mut self, edge : Edge) {
+    //     self.edges[self.edges.len()-1] = edge;
+    // }
 
     pub fn get_mst(&mut self) -> Vec<Edge> {
         self.assign_indexes();
@@ -139,11 +167,28 @@ impl Tree {
             }
         }
         self.weight = weight;
-
+        self.mst = mst.clone();
         mst
     }
 
     pub fn get_weight(&self) -> f64 {
         self.weight
+    }
+
+    pub fn get_mst_edges(&self) -> &Vec<Edge> {
+        &self.mst
+    }
+    
+    pub fn set_vertices(&mut self, vertices: &Vec<Vertex>) {
+        self.vertices = vertices.clone();
+    }
+
+    pub fn overwrite_edge(&mut self, index : usize, edge : Edge) {
+        self.mst[index] = edge;
+    }
+
+
+    pub fn update_mst(){
+        
     }
 }
