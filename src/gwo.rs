@@ -17,7 +17,7 @@ type Type = Uniform<f64>;
 
 #[derive(Debug, Clone)]
 struct Wolf {
-    solution: Vec<Edge>,
+    solution: Tree,
     vertices: Vec<Vertex>,
     fitness: f64,
     position: Vertex,
@@ -33,7 +33,7 @@ impl GWO {
         }
     }
 
-    fn evolve(&mut self, a: f64, positions: &mut [Wolf]) {
+    fn evolve(&mut self, a: f64, positions: &mut Vec<Wolf>) {
         // let mut alpha = vec![Vertex(0.0, 0.0, 0); self.k];
         // let mut beta = vec![Vertex(0.0, 0.0, 0); self.k];
         // let mut delta = vec![Vertex(0.0, 0.0, 0); self.k];
@@ -58,20 +58,18 @@ impl GWO {
 
         let mut X: Vec<f64> = vec![0.0f64; 3];
 
-        // let mut X : Vec<Wolf> = vec![Wolf{
-        //     solution : Tree::default(),
-        //     fitness : 0.0,
-        //     position : 0.0
-        // }; 3];
-
         for i in 0..3 {
             X[i] = positions[0].fitness + A[i] * (positions[1].fitness - positions[2].fitness);
-            //let vertex = self.vertices[];
+        }
+
+
+        for i in 3..positions.len(){
+            
         }
 
         let mut index: usize = self.r.gen::<usize>() % self.k;
         let mut v_index: usize = self.r.gen::<usize>() % self.vertices.len();
-        let mut u_index: usize = self.r.gen::<usize>() % self.vertices.len();
+        //let mut u_index: usize = self.r.gen::<usize>() % self.vertices.len();
 
         let distance = |p1: &Vertex, p2: &Vertex| {
             sqrt(pow((p2.0 - p1.0) as f64, 2.0) + pow((p2.1 - p1.1) as f64, 2.0))
@@ -106,7 +104,7 @@ impl GWO {
                 let new_solution = new_tree.get_mst();
 
                 if new_tree.get_weight() < previous_weight {
-                    positions[i].solution = new_solution;
+                    positions[i].solution = new_tree;
                     positions[i].fitness = new_tree.get_weight();
                 }else {
                     positions[i].vertices[index] = previous_vertex;
@@ -116,52 +114,7 @@ impl GWO {
 
         
 
-        // if A < 1 then wolf attacks
-        //else get another prey
-
-        // for i in 0..3{
-
-        //     while A[i] >= 1.0{
-        //         index = self.r.gen::<usize>() % self.k;
-        //         u_index = self.r.gen::<usize>() % self.vertices.len();
-        //         v_index = self.r.gen::<usize>() % self.vertices.len();
-        //         A[i] = 2.0 * a * r1.sample(uniform) - a;
-        //     }
-
-        //     positions[i].solution.remove(index);
-        //     let weight : f64 = distance(&self.vertices[u_index], &self.vertices[v_index]);
-        //     let edge = Edge::new(self.vertices[u_index], self.vertices[v_index], weight);
-
-        //     let mut new_edges : Vec<Edge> = vec![Edge::default(); self.k-1];
-        //     for j in 0..positions[i].solution.len(){
-        //         if positions[i].solution[j].get_weight() > weight {
-        //             new_edges.push(edge);
-        //         }else {
-        //             new_edges.push(positions[i].solution[j].clone());
-        //         }
-        //     }
-        // }
-
-        // let D_1 = num::abs(C1 * position[0[.x - wol );
-
-        // let mut r = StdRng::seed_from_u64(222);
-        // let normal = Uniform::from(0..self.vertices.len());
-        // r.gen_range(0.0, 1.0);
-
-        // for i in 0..self.vertices.len(){
-
-        // }
-        // let v1 = normal.sample(&mut r); // <- Here we use the generator
-        // let v2 = normal.sample(&mut r);
-
-        // let ru = Uniform::new(0.0, 1.0);
-        // let r1  : f64 = ru.sample(&mut ru) ;
-
-        // let a1 = 2.0 * a * r1-a;
-        // let c1 = 2.0 * r2;
-
-        // let a = 2 - 2 * epoch / (epoch - 1);
-        //_, list_best, _ = self.get_special_solutions(self.pop, best=3)
+     
     }
 
     fn binary_search(edges: Vec<Edge>) {}
@@ -172,41 +125,76 @@ impl GWO {
 
     /// Function that runs the gwo heuristic.
     ///
-    // pub fn run_gwo(&mut self, num_iter: usize) {
-    //     let mut solutions: Vec<Wolf> = vec![
-    //         Wolf {
-    //             solution: Tree::default(),
-    //             fitness: 0.0,
-    //             position: Vertex::default()
-    //         };
-    //         self.population
-    //     ];
+    pub fn run_gwo(&mut self, num_iter: usize, phi : f64) {
 
-    //     // generation of random positions
-    //     for i in 0..self.population {
-    //         //solutions.push(Tree::new(&self.generate_solution(), self.k));
-    //         solutions[i]
-    //             .solution
-    //             .set_vertices(&self.generate_solution());
-    //         solutions[i].solution.get_mst();
-    //         // println!("{:?} : {} ", &positions[i].get_mst(), &positions[i].get_weight());
-    //     }
+        self.assign_vertices();
 
-    //     // sort the solutions based on
-    //     solutions.sort_by(|a, b| {
-    //         a.solution
-    //             .get_weight()
-    //             .partial_cmp(&b.solution.get_weight())
-    //             .unwrap()
-    //     });
+        //initializing the pack and its values
+        let mut pack : Vec<Wolf> = vec![
+            Wolf {
+                solution: Tree::default(),
+                vertices : vec![Vertex::default(); self.k],
+                fitness: 0.0,
+                position : Vertex::default()
+            };
+            self.population
+        ];
 
-    //     // Sort the solutions from best to worst
+        for i in 0..self.population{
+            let vertices = self.generate_solution();
+            pack[i].solution = Tree::new(&vertices, self.k);
+            pack[i].vertices = vertices;
+            pack[i].position = vertices[i];
 
-    //     let mut counter = 0;
-    //     while counter < num_iter {
-    //         counter += 1;
-    //     }
-    // }
+            pack[i].solution.get_mst();
+            pack[i].fitness = pack[i].solution.get_weight();
+        }
+
+         // sort the solutions based on fitness
+        pack.sort_by(|a, b| {
+            a.fitness
+                .partial_cmp(&b.fitness)
+                .unwrap()
+        });
+        
+
+        let a = 2.0;
+        let i = 0;
+        while a > 0.0 && num_iter < i {
+            let previous_alpha_fitness = pack[0].fitness;
+
+
+            self.evolve(a, &mut pack);
+
+            let new_alpha_fitness = pack[0].fitness;
+
+            if new_alpha_fitness < previous_alpha_fitness {
+                a *= phi;
+            }
+            i+=1;
+        }
+        
+        
+        
+        
+        // generation of random positions
+        // for i in 0..self.population {
+        //     //solutions.push(Tree::new(&self.generate_solution(), self.k));
+        //     pack[i]
+        //         .solution
+        //         .set_vertices(&self.generate_solution());
+        //     solutions[i].solution.get_mst();
+        //     // println!("{:?} : {} ", &positions[i].get_mst(), &positions[i].get_weight());
+        // }
+
+     
+    }
+
+    fn assign_vertices(&mut self) {
+        for i in 0..self.vertices.len() {
+            self.vertices[i].2 = i;
+        }
+    }
 
     fn generate_solution(&mut self) -> Vec<Vertex> {
         let mut new_vertices: Vec<Vertex> = vec![Vertex(0.0, 0.0, 0); self.k];
