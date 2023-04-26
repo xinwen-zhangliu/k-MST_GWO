@@ -73,8 +73,6 @@ impl GWO {
             let index =
                 (sum * self.vertices.len() as f64 / 3.0).round() as usize % self.vertices.len();
 
-            //println!("{:?}",index);
-
             let index = self.r.gen::<usize>() % self.k;
 
             while GWO::repeated(&positions[i].vertices, &new_vertex) {
@@ -82,13 +80,10 @@ impl GWO {
                 new_vertex = self.vertices[n];
             }
 
-            //println!("old{:?}", positions[i].vertices);
-
             positions[i].vertices[index] = new_vertex;
-            //println!("new{:?}", positions[i].vertices);
 
             positions[i].solution = Tree::new(&positions[i].vertices, self.k);
-            //            pack[i].vertices = vertices.clone();
+
             positions[i].position = new_vertex;
 
             positions[i].solution.get_mst();
@@ -99,7 +94,6 @@ impl GWO {
     fn repeated(vertices: &Vec<Vertex>, vertex: &Vertex) -> bool {
         for i in 0..vertices.len() {
             if Vertex::equals(&vertices[i], &vertex) {
-                // println!("{:?}\n {:?}", vertices, vertex);
                 return true;
             }
         }
@@ -135,50 +129,43 @@ impl GWO {
 
             pack[i].solution.get_mst();
             pack[i].fitness = pack[i].solution.get_weight();
-            //dbg!(pack[i].fitness) ;
         }
 
         // sort the solutions based on fitness
         pack.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
-        //dbg!("f",pack[0].fitness);
+
         let mut a = 2.0;
         let mut i = 0;
         while a > 0.0 {
-            //println!("{}", a);
             let previous_alpha_fitness = pack[0].fitness;
 
             self.evolve(a, &mut pack);
 
-            //pack.iter().map(|t| t.solution.get_mst());
             pack.sort_by(|a, b| a.fitness.partial_cmp(&b.fitness).unwrap());
 
             let new_alpha_fitness = pack[0].fitness;
 
             println!("new alpha {}", new_alpha_fitness);
             a -= phi;
-            
-            
-            // if new_alpha_fitness < previous_alpha_fitness {
-            //     println!("new alpha {}", new_alpha_fitness);
-            //     println!("sol {:?}", pack[0].solution.get_mst_edges());
-            //     println!("new iter fitness");
 
-            //     a -= phi;
-            //     i = 0;
-            // }
+            if new_alpha_fitness < previous_alpha_fitness {
+                println!("new alpha {}", new_alpha_fitness);
+                println!("sol {:?}", pack[0].solution.get_mst_edges());
+                println!("new iter fitness");
 
-            // if i > num_iter {
-            //     i = 0;
-            //     println!("new iter begger than num iter");
-            //     //self.mix_vertices();
-            //     a -= phi;
-            //     dbg!(a);
-            //     continue;
-            // }
+                a -= phi;
+                i = 0;
+            }
+
+            if i > num_iter {
+                i = 0;
+
+                a -= phi;
+                self.mix_vertices();
+                continue;
+            }
 
             i += 1;
-            self.mix_vertices();
-            //break;
         }
         pack[0].solution.clone()
     }
