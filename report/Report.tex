@@ -55,27 +55,99 @@ Esta meta-heur\'istica fue inspirar por el comportamiento depredatorio de los lo
 part\'iculas, este algoritmo simula el comportamiento depredatorio de los lobos gries , y su comportamiento jer\'arquico dentro de manadas.\\
 
 Cada enjambre de lobos sigue una jerarqu\'ia social, como la que sigue
-
+\begin{center}
+  \includegraphics[width=\textwidth]{1682483544.png}
+\end{center}
 
 donde Alpha, Beta y Delta son las 3 mejores soluciones respectivamente, y todas las dem\'as son asignadas a los Omegas.
 
+El modelo matem\'atico que representa a este algoritmo contiene las siguientes estapas
+\begin{enumerate}
+\item Acorralar a la presa
+\item Caza
+\item Atacar a la presa
+  \end{enumerate}
+
+  Los lobos acorrarlan y rodean a su presa cuando cazan, para modelar esto matem\'asticamente usamos
+  la sigueinte ecuaci\'on
+  \[\vec{D} = | \vec{C} \cdot \vec{X}_p(t) - \vec{X}(t)|\]
+  \[\vec{X} (t+1) = \vec{X}_p (t) = \vec{A} \cdot \vec{D}\]
+  donde $t$ respresenta la iteraci\'on actual y $\vec{A}, \vec{C}$ son vectores coeficiente. $\vec{X}_p}$ es la posici\'on de la presa, de la cual no sabemos su paradero exacto, y es dependiente  al funci\'on de costo que se quiera usar. $\vec{X}$ indica la posici\'on del lobo en la iteraci\'on anterior.
+
+Los vectores $\vec{A} $  y $\vec{C} $ son calculados de la siguente manera.
+\[\vec{A} = 2 \vec{a} \cdot \vec{r}_1 -\vec{a}\]
+\[\vec{C} = 2 \cdot \vec{r}_2\]
+donde $\vec{a} $ es un componente lineal que decrese de 2 a 0, a lo largo de las iteraciones , y $r_1, r_2$ son n\'umeros aleatorios
 
 
-
+  
 \section*{Diseño}
+
+La gran parte de la heur\'istica se encuentra dentro del struct, GWO el cual se encarga de generar
+conjuntos de v\'ertices en cada iteraci\'on de la evoluci\'on de los lobos, para generar los
+\'arboles generadores de peso m\'inimo asociado. Para esto se implement\'o el algoritmo de Kruskal,
+y sus funciones asociadas dentro de del struct Tree, y el cual igual regresa el pero asociado al
+\'arbol el cu\'al es la evaluaci\'on de \"fitness\" de cada lobo.
+
+Dentro del crate Tree, igual se encuentran los structs Edge y Vertex, que representan las aristas de
+la gr\'afica y los v\'ertices respectivamente. Cada Edge est\'as compuesto de dos v\'ertices que
+delimitan cada extremo de la arista, adem\'as de el peso asociado a esta. Los v\'ertices guardan el
+valor de las coordenas en el palno xy, adem\'as de un identificador representado por un entero.
+
+El struct Reader es el encargado, leer los puntos de un archivo de texto y crear V\'ertices que
+guarden las coordenadas. 
 
 
 \section*{Implementaci\'on}
+El aplicar la heur\'istica al problema del k \'arbol generador de peso m\'inimo fue el proceso m\'as
+tardado. La mayor\'ia del tiempo invertido en este proyecto fue hecho en la implementaci\'on de la
+heur\'istica.
+
+El primer paso fue investigar y comprender a fondo la idea general de \'esta para desp\'ues poder
+aplicarlo a nuestro problema. La modificaci\'on del modelo para que se acoplara a lo necesario para
+generar soluciones fue la parte m\'as 
+
+ Cada lobo dentro de la manada tiene
+asociado una soluci\'on del problema, y en cada iteraci\'on el conjunto de v\'ertice asociada a la
+soluci\'on es modificada aleatoriamente, basado en la posici\'on de los lobos Alpha, Beta y Delta con las mejores soluciones. Cada lobo Omega actualiza su nueva posici\'on en base a estos, donde la
+posici\'on es la que determina el nuevo v\'ertice que va a ser agregado para obtener el vecino.
 
 
+La implementaci\'on de kruskal sigui\'o el algoritmo de union find ~\cite{unionFind} con path compression para una menor complejidad. Kruskal trabaja sobre una lista de aristas ordenaddas por su peso, y agarra en orden las aristas que no generen un ciclo dentro del \'arbol, esto hasta tener aritas que
+conecten a todos los v\'ertices de la gr\'fica. Uno de los principales problemas de esta
+parte de la implementaci\'on fue el refactorizar el c\'odigo para que aceptara valores flotantes. La primera implementaci\'on de este algoritmo fue usando HashMpas, lo que fue un error, ya que las
+coordenadas y pesos de tipo flotante, hacen que muchas de las operaciones sean necesariamente implementadas a mano. 
 
 
+Muchos de los problemas en rust surgen del tiempo de vida de vairables y de la pocesi\'on de estas. Esto lleva a que un c\'odigo m\'as simple requiera de muchas m\'as copias de varibales para no tener
+problemas con lo mencionado anteriormente, esto llea a programas menos optimizdos 
 \section*{Experimentaci\'on y resultados}
+
+Las soluciones generadas por la heur\'istica tardan en converger y mejorar los anteriores mientras
+m\'as baja la evaluaci\'on del resutado anterior, teniendo un estacamiento al estar generando los
+vecinos aleatorios en cada iteraci\'on.
+
+
+
+La falta de experimentaci\'on llev\'o a un sistema menos predecible, y propenso a m\'inimos locales.
+Por la manera en que lso lobos toman nuevas posiciones depu\'es de cada iteraci\'o hace que el rango de aleatoridad para ecoger nuevo v\'ertices sea pequeño, lo que lleva a que los agentes converjan a
+un m\'inimo local y no haya una mayor exploraci\'on.
+
+El promedio de la evaluaci\'on de los resultados encontrados por la heur\'istica sobre los puntos pasados por correo caen en el rango de $50 - 70$. 
 
 
 
 
 \section*{Conclusiones}
+La planeaci\'on en este caso podr\'ia haberse visto avanzada con la implementaci\'on del programa,
+ya que crea dudas reales que aplican al c\'odigo del programa y nos hace preguntarnos de la mejor
+manera de implementar lo requerido .
+
+La experimentaci\'on no s\'olo conlleva a encontrar mejores resutlados sino igual a mejorar el
+c\'odigo para que la calidad de los resultados sea cada vez m\'as alta. Es por esto que
+
+Por la falta de tiempo la optimización del sistema fue escaza, por lo que el experimentar fue m\'as
+tardado de lo normal.
 
 
 \bibliography{citations}{}

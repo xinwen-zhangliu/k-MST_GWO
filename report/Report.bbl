@@ -5,4 +5,9 @@ Seyedali Mirjalili, Seyed~Mohammad Mirjalili, and Andrew Lewis.
 \newblock Grey wolf optimizer.
 \newblock {\em Advances in Engineering Software}, 69:46--61, 2014.
 
+\bibitem{unionFind}
+Abhishek Rajput.
+\newblock Union find algorithm.
+\newblock {\em Geeks for Geeks}, 2022.
+
 \end{thebibliography}
