@@ -1,0 +1,83 @@
+\documentclass[a4paper]{article}
+\usepackage{listings}
+\usepackage{pgf}
+\usepackage[utf8]{inputenc}
+\usepackage{verbatim}
+\usepackage{titling}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{qtree}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{times}
+\usepackage{dsfont}
+\usepackage{titling}
+\usepackage[a4paper,
+bindingoffset=0.2in,
+left=1in,
+right=1in,
+top=2in,
+bottom=1in,
+footskip=.25in]{geometry}
+\usepackage{cite} %bibtex
+\usepackage{pdfpages}
+
+\pretitle{\begin{center}\linespread{1}}
+  \posttitle{\end{center}\vspace{0.14cm}} 
+\preauthor{\begin{center}\Large}
+  \postauthor{\end{center}}
+
+\setlength{\droptitle}{-10em}
+\title { \Large{Seminario de Ciencias de la Computaci\'on B}\protect\\
+  \large{Heurísticas de Optimización Combinatoria}\protect\\
+  \large{Problema del k-\'arbol generador de peso m\'inimo\\con Optimización de Lobos Grises}}
+
+
+\date{\normalsize{Martes, 25 de Abril, 2023.}}
+\author{\normalsize{Profesor: Canek Peláez Valdés}\protect\\
+  \normalsize{Autor: Xin Wen Zhang Liu}}\vspace{0.2cm}
+
+\clearpage
+
+
+
+\begin{document}
+\allowdisplaybreaks
+\maketitle
+
+\subsection*{El problema del k \'arbol generador de peso m\'inimo}
+La entrada de este problema es una gr\'afica completa no dirigida, sobre la cual se debe encotrar una subconjutno de k v\'ertices los cu\'ales generen un \'arbol de peso m\'inimo en la gr\'afica, entonces el resultado es un conjunto de $k$ v\'ertices y $k-1$ aristas dentro de la gr\'afica. Este problema es NP-duro, con una complejidad polinomial, 
+
+
+\subsection*{Optimizaci\'on del Lobo Gris / Grey Wolf Optimization}
+Esta meta-heur\'istica fue inspirar por el comportamiento depredatorio de los lobos grises, y planteada Mirjalili
+~\cite{MIRJALILI201446}. Propuesta como una nueva alternativa a la optimización por enjambre de
+part\'iculas, este algoritmo simula el comportamiento depredatorio de los lobos gries , y su comportamiento jer\'arquico dentro de manadas.\\
+
+Cada enjambre de lobos sigue una jerarqu\'ia social, como la que sigue
+
+
+donde Alpha, Beta y Delta son las 3 mejores soluciones respectivamente, y todas las dem\'as son asignadas a los Omegas.
+
+
+
+
+\section*{Diseño}
+
+
+\section*{Implementaci\'on}
+
+
+
+
+\section*{Experimentaci\'on y resultados}
+
+
+
+
+\section*{Conclusiones}
+
+
+\bibliography{citations}{}
+\bibliographystyle{plain}
+\end{document}

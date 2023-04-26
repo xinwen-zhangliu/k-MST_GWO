@@ -14,6 +14,7 @@ impl Vertex {
     /// Equals function that checks if two vetices are equal using float partial comp
     pub fn equals(v1: &Vertex, v2: &Vertex) -> bool {
         approx_eq!(f64, v1.0, v2.0, ulps = 4) && approx_eq!(f64, v1.1, v2.1, ulps = 4)
+        //v1.2 == v2.2
     }
 }
 
@@ -183,12 +184,12 @@ impl Tree {
         self.vertices = vertices.clone();
     }
 
+    pub fn overwrite_vertex(&mut self, index : usize, vertex : Vertex){
+        self.vertices[index] = vertex
+    }
+    
     pub fn overwrite_edge(&mut self, index : usize, edge : Edge) {
         self.mst[index] = edge;
     }
 
-
-    pub fn update_mst(){
-        
-    }
 }
