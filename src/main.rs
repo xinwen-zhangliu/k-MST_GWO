@@ -15,7 +15,7 @@ fn main() {
     let mut k: u32 = 10;
 
     let db_path = env::var("CARGO_MANIFEST_DIR").unwrap_or("../..".to_string());
-    let mut path = db_path + "/data/t3.txt";
+    let mut path = db_path + "/data/t2.txt";
 
     let matches = Command::new("Grey Wolf Optimization")
         .next_line_help(true)

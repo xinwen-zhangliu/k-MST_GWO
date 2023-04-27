@@ -223,6 +223,8 @@ impl GWO {
 
             i += 1;
         }
+        let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
+                self.plot(&pack[0],file );
         pack[0].solution.clone()
     }
 
