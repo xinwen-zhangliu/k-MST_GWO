@@ -191,6 +191,11 @@ Aunque el programa ecuentre soluciones favorables, sigue teniendo una falta de e
 
 El haber modificado la manera de escoger aristas para nuevos vecinos, ayud\'o exponencialmente al tiempo de jecuci\'on y la calidad de soluciones encontradas. El filtrar condiciones para generar casos aleatorios enfonca al algoritmo a tener mejores resultados.
 
+El obtener vertices aleatorios basados en la posici\'on de los tres mejores resultados lleva a un espacio de
+b\'usqueda m\'as reducido, sin poder asegurar que la direcci\'on de b\'usqueda sea el indicado para encontrar
+el m\'inimo local, por lo que esa parte de la heur\'istica no se traduce muy bien sobre el problema de
+encontrar el k \'arbol generador de peso m\'inimo. 
+
 \bibliography{citations}{}
 \bibliographystyle{plain}
 \end{document}

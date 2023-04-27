@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.5)  27 APR 2023 00:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.5)  27 APR 2023 00:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -779,7 +779,7 @@ Overfull \hbox (15.0pt too wide) in paragraph at lines 174--175
 [][] 
  []
 
-[3] (./Report.bbl [4 <./alpha.pdf>] [5]) [6
+[3] [4 <./alpha.pdf>] (./Report.bbl [5]) [6
 
 ] (./Report.aux) ) 
 Here is how much of TeX's memory you used:
@@ -798,7 +798,7 @@ amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pf
 b></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on Report.pdf (7 pages, 130868 bytes).
+Output written on Report.pdf (7 pages, 131298 bytes).
 PDF statistics:
  83 PDF objects out of 1000 (max. 8388607)
  52 compressed objects within 1 object stream
