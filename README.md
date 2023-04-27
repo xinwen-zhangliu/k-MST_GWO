@@ -4,4 +4,4 @@ This rust project finds solutions for the k-minimum spanning tree problem using 
 
 ```
 cargo run
-``
+```
