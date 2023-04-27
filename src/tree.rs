@@ -139,9 +139,7 @@ impl Tree {
         }
     }
 
-    // fn overwrite_edge(&mut self, edge : Edge) {
-    //     self.edges[self.edges.len()-1] = edge;
-    // }
+   
 
     pub fn get_mst(&mut self) -> Vec<Edge> {
         self.assign_indexes();
@@ -191,10 +189,6 @@ impl Tree {
         self.vertices[index] = vertex
     }
 
-
-    fn get_center(){
-        
-    }
     
     pub fn overwrite_farthest(){
 

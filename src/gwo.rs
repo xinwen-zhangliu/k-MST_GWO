@@ -47,7 +47,7 @@ impl GWO {
     }
 
     fn evolve(&mut self, a: f64, positions: &mut Vec<Wolf>) {
-        for i in (3..self.population).rev() {
+        for i in (0..self.population).rev() {
             let uniform = Uniform::new(0.0, 1.0);
 
             let mut A: Vec<f64> = vec![0.0f64; 3];
@@ -79,38 +79,17 @@ impl GWO {
             let center = self.get_center(&positions[i]);
             let old_distance = GWO::get_distance(&center, &old_vertex);
 
-
             let mut n = self.r3.gen::<usize>() % positions[i].vertices.len();
             let mut new_vertex = positions[i].vertices[n];
 
             let mut j = 0;
             let mut new_distance = f64::INFINITY;
-            while  new_distance > old_distance && j< 1000 {
-                
+            while new_distance > old_distance && j < 1000 {
                 n = self.r3.gen::<usize>() % positions[i].vertices.len();
                 new_vertex = positions[i].vertices[n];
                 new_distance = GWO::get_distance(&new_vertex, &center);
                 j += 1;
-                //dbg!(new_distance , old_distance);
             }
-
-            //let n = self.r3.gen::<usize>() % self.vertices.len();
-            // let mut new_vertex = self.vertices
-            //     [(sum * self.vertices.len() as f64 / 3.0).round() as usize % self.vertices.len()];
-            // let mut new_vertex = self.vertices[n];
-            // let index =
-            //     (sum * self.vertices.len() as f64 / 3.0).round() as usize % self.vertices.len();
-
-            // let index = self.r.gen::<usize>() % self.k;
-
-            // while GWO::repeated(&positions[i].vertices, &new_vertex) {
-            //     let n = self.r3.gen::<usize>() % self.vertices.len();
-            //     new_vertex = self.vertices[n];
-            // }
-
-        
-            
-            //positions[i].solution.get_
 
             positions[i].solution.overwrite_vertex(index, new_vertex);
             positions[i].vertices[n] = old_vertex;
@@ -118,17 +97,14 @@ impl GWO {
             let vertices = positions[i].solution.get_vertices();
             positions[i].solution = Tree::new(&vertices, self.k);
 
-            
-                positions[i].solution.get_mst(); 
+            positions[i].solution.get_mst();
 
             positions[i].position = new_vertex;
 
-//            positions[i].solution.get_mst();
             positions[i].fitness = positions[i].solution.get_weight();
 
-
             let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
-                self.plot(&positions[0],file );
+            self.plot(&positions[0], file);
         }
     }
 
@@ -149,6 +125,12 @@ impl GWO {
 
     /// Function that runs the gwo heuristic.
     pub fn run_gwo(&mut self, num_iter: usize, phi: f64) -> Tree {
+        let mut best_overall = Wolf {
+                solution: Tree::new(&self.vertices, self.k),
+                vertices: self.vertices.clone(),
+                fitness: f64::INFINITY,
+                position: Vertex::default()
+            };
         //self.mix_vertices();
         self.assign_vertices();
 
@@ -170,6 +152,7 @@ impl GWO {
         for i in 0..self.population {
             let index: usize = r.gen::<usize>() % self.k;
             let vertices = self.generate_solution(&mut pack[i]);
+            println!("{:?}", vertices);
             pack[i].solution = Tree::new(&vertices, self.k);
             //pack[i].vertices = vertices.clone();
 
@@ -195,11 +178,15 @@ impl GWO {
 
             //a -= phi;
 
+            if pack[0].fitness < best_overall.fitness{
+                best_overall = pack[0].clone();
+            }
+            
             if new_alpha_fitness < previous_alpha_fitness {
                 println!("new alpha {}", new_alpha_fitness);
                 let sol = pack[0].solution.get_mst_edges();
                 println!("sol {:?}", pack[0].solution.get_mst_edges());
-                
+
                 for edge in sol {
                     println!(
                         "S,{:?},{:?},{:?},{:?}",
@@ -223,8 +210,15 @@ impl GWO {
 
             i += 1;
         }
-        let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
-                self.plot(&pack[0],file );
+        for i in 0..self.population {
+            dbg!(pack[i].fitness);
+            let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
+            self.plot(&pack[i], file);
+        }
+        //         let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
+
+        println!("{:?}\n{}", best_overall.solution.get_mst_edges(), best_overall.fitness);
+            self.plot(&best_overall, "alpha.svg".to_owned());
         pack[0].solution.clone()
     }
 
@@ -252,13 +246,14 @@ impl GWO {
 
         for i in 0..self.k {
             let index: usize = self.r.gen::<usize>() % wolf.vertices.len();
+            dbg!(index);
             new_vertices[i] = wolf.vertices[index];
             wolf.vertices.remove(index);
         }
         new_vertices
     }
 
-    fn plot(&self, wolf: &Wolf, file : String) {
+    fn plot(&self, wolf: &Wolf, file: String) {
         let mut document = Document::new().set("width", 116).set("height", 115);
         let edges = wolf.solution.get_mst_edges();
         for v in &self.vertices {
@@ -281,37 +276,34 @@ impl GWO {
         svg::save(file, &document).unwrap();
     }
 
-    fn get_center(&self, wolf : &Wolf) -> Vertex{
+    fn get_center(&self, wolf: &Wolf) -> Vertex {
         let vertices = wolf.solution.get_vertices();
-        let mut x_sum :f64 = 0.0;
-        let mut y_sum : f64 = 0.0;
+        let mut x_sum: f64 = 0.0;
+        let mut y_sum: f64 = 0.0;
         for i in 0..self.k {
             x_sum += vertices[i].0;
             y_sum += vertices[i].1;
         }
-        Vertex(x_sum/self.k as f64, y_sum/ self.k as f64, 0)
+        Vertex(x_sum / self.k as f64, y_sum / self.k as f64, 0)
     }
 
-      fn get_distance(p1: &Vertex, p2: &Vertex) -> f64 {
+    fn get_distance(p1: &Vertex, p2: &Vertex) -> f64 {
         sqrt(pow((p2.0 - p1.0) as f64, 2.0) + pow((p2.1 - p1.1) as f64, 2.0))
     }
 
-    
-    fn get_farthest(&self, wolf : &Wolf)-> usize {
+    fn get_farthest(&self, wolf: &Wolf) -> usize {
         let vertices = wolf.solution.get_vertices();
         let center = self.get_center(wolf);
-        let mut index : usize =0;
+        let mut index: usize = 0;
         let mut max_distance = 0.0;
-        for i in 0..vertices.len(){
+        for i in 0..vertices.len() {
             let new_distance = GWO::get_distance(&center, &vertices[i]);
-            if  new_distance > max_distance{
+            if new_distance > max_distance {
                 max_distance = new_distance;
                 index = i;
             }
-            
         }
-        
-        index
 
+        index
     }
 }

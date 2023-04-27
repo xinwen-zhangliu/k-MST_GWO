@@ -72,7 +72,7 @@ El modelo matem\'atico que representa a este algoritmo contiene las siguientes e
   la sigueinte ecuaci\'on
   \[\vec{D} = | \vec{C} \cdot \vec{X}_p(t) - \vec{X}(t)|\]
   \[\vec{X} (t+1) = \vec{X}_p (t) = \vec{A} \cdot \vec{D}\]
-  donde $t$ respresenta la iteraci\'on actual y $\vec{A}, \vec{C}$ son vectores coeficiente. $\vec{X}_p}$ es la posici\'on de la presa, de la cual no sabemos su paradero exacto, y es dependiente  al funci\'on de costo que se quiera usar. $\vec{X}$ indica la posici\'on del lobo en la iteraci\'on anterior.
+  donde $t$ respresenta la iteraci\'on actual y $\vec{A}, \vec{C}$ son vectores coeficiente. $\vec{X}_p$ es la posici\'on de la presa, de la cual no sabemos su paradero exacto, y es dependiente  al funci\'on de costo que se quiera usar. $\vec{X}$ indica la posici\'on del lobo en la iteraci\'on anterior.
 
 Los vectores $\vec{A} $  y $\vec{C} $ son calculados de la siguente manera.
 \[\vec{A} = 2 \vec{a} \cdot \vec{r}_1 -\vec{a}\]
@@ -149,7 +149,17 @@ El haber implementado la graficaci\'on de las soluciones ayud\'o el tipo de solu
 
  Despu\'es de observar varias gr\'aficas generadas a lo largo de la ejecuci\'on, se not\'o que las gr\'aficas de las primeras iteraciones siempre segu\'ian una forma m\'as esparcida
 en el espacio de b\'usqueda, sin embargo al continuar con la ejecuc\'i\'on y al ir mejorando las
-soluciones, las gr\'aficas terminaban teniendo una forma m\'as compacta a las iniciales. Sin embargo, por 
+soluciones, las gr\'aficas terminaban teniendo una forma m\'as compacta a las iniciales. Sin embargo, por
+
+
+Para solucionar esto se implement\'o una manera diferente de seleccionar los vecinos en cada iteraci\'on. Primero se busca el centro geom\'etrico de la gr\'aafica y a partir de esto se compara con
+todos los puntos en la soluc\'on anterior y se encuentra al m\'as alejado, el cual va a ser el que
+sea modificado para encontrar una soluci\'on vecina. Despu\'es de esto se busca un v\'ertice al azar
+el cual tenga una distancia al centro geom\'etrico menor del v\'ertice que se elimin\'o. De esta
+manera cada agente llega exaustivamente a un m\'inimo local.
+
+Con esto se logr\'o que las soluciones encontradas bajaran de un peso de $50-70$ para el conjunto
+original de puntos, a poder encontrar la soluci\'on \'optima de 30.
 
 \section*{Conclusiones}
 La planeaci\'on en este caso podr\'ia haberse visto avanzada con la implementaci\'on del programa,
