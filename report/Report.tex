@@ -169,7 +169,7 @@ el cual tenga una distancia al centro geom\'etrico menor del v\'ertice que se el
 manera cada agente llega exaustivamente a un m\'inimo local.
 
 Con esto se logr\'o que las soluciones encontradas bajaran de un peso de $50-70$ para el conjunto
-original de puntos, a poder encontrar la soluci\'on \'optima de 30.
+original de puntos, a poder encontrar la soluci\'on \'optima de 30. Adem\'as de que el tiempo de ejercuci\'on disminuy\'o un gran porcentage.
 
 \includegraphics[width=\textwidth]{alpha.pdf}
 \captionof{figure}{Grafica de soluc\'on con los puntos de t3.txt, evaluaci\'on 57.64}
@@ -188,6 +188,8 @@ Por la falta de tiempo la optimización del sistema fue escaza, por lo que el ex
 tardado de lo normal.
 
 Aunque el programa ecuentre soluciones favorables, sigue teniendo una falta de exploraci\'on y cada agente cae en su m\'inimo local r\'apidamente. Por lo que las soluciones dependen de las soluciones aleatorias iniciales.
+
+El haber modificado la manera de escoger aristas para nuevos vecinos, ayud\'o exponencialmente al tiempo de jecuci\'on y la calidad de soluciones encontradas. El filtrar condiciones para generar casos aleatorios enfonca al algoritmo a tener mejores resultados.
 
 \bibliography{citations}{}
 \bibliographystyle{plain}
