@@ -1,3 +1,4 @@
+#[allow(non_snake_case)]
 use crate::tree::Edge;
 use crate::tree::Tree;
 use crate::tree::Vertex;
@@ -5,6 +6,10 @@ use libm::{pow, sqrt};
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
 use rand_distr::Uniform;
+
+use svg::node::element::Circle;
+use svg::node::element::Line;
+use svg::Document;
 
 pub struct GWO {
     k: usize,
@@ -68,8 +73,10 @@ impl GWO {
                 sum += new_x;
             }
 
+            let n = self.r3.gen::<usize>() % self.vertices.len();
             let mut new_vertex = self.vertices
                 [(sum * self.vertices.len() as f64 / 3.0).round() as usize % self.vertices.len()];
+            // let mut new_vertex = self.vertices[n];
             let index =
                 (sum * self.vertices.len() as f64 / 3.0).round() as usize % self.vertices.len();
 
@@ -80,6 +87,7 @@ impl GWO {
                 new_vertex = self.vertices[n];
             }
 
+            //positions[i].solution.get_
             positions[i].vertices[index] = new_vertex;
 
             positions[i].solution = Tree::new(&positions[i].vertices, self.k);
@@ -108,24 +116,31 @@ impl GWO {
 
     /// Function that runs the gwo heuristic.
     pub fn run_gwo(&mut self, num_iter: usize, phi: f64) -> Tree {
+        //self.mix_vertices();
         self.assign_vertices();
+
+        //self.vertices.sort_by(|a,b| ((a.0+ a.1)/2.0) );
 
         //initializing the pack and its values
         let mut pack: Vec<Wolf> = vec![
             Wolf {
                 solution: Tree::new(&self.vertices, self.k),
-                vertices: vec![Vertex::default(); self.k],
+                vertices: self.vertices.clone(),
                 fitness: 0.0,
                 position: Vertex::default()
             };
             self.population
         ];
 
+        let mut r = StdRng::seed_from_u64(7);
+
         for i in 0..self.population {
-            let vertices = self.generate_solution();
+            let index: usize = r.gen::<usize>() % self.k;
+            let vertices = self.generate_solution(&mut pack[i]);
             pack[i].solution = Tree::new(&vertices, self.k);
-            pack[i].vertices = vertices.clone();
-            pack[i].position = vertices[i];
+            //pack[i].vertices = vertices.clone();
+
+            pack[i].position = vertices[index]; //len = 10
 
             pack[i].solution.get_mst();
             pack[i].fitness = pack[i].solution.get_weight();
@@ -145,15 +160,23 @@ impl GWO {
 
             let new_alpha_fitness = pack[0].fitness;
 
-            println!("new alpha {}", new_alpha_fitness);
-            a -= phi;
+            //a -= phi;
 
             if new_alpha_fitness < previous_alpha_fitness {
                 println!("new alpha {}", new_alpha_fitness);
+                let sol = pack[0].solution.get_mst_edges();
                 println!("sol {:?}", pack[0].solution.get_mst_edges());
-                println!("new iter fitness");
+                let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
+                self.plot(&pack[0],file );
+                for edge in sol {
+                    println!(
+                        "S,{:?},{:?},{:?},{:?}",
+                        edge.u.0, edge.u.1, edge.v.0, edge.v.1
+                    );
+                }
 
                 a -= phi;
+                println!("{}", a);
                 i = 0;
             }
 
@@ -162,6 +185,7 @@ impl GWO {
 
                 a -= phi;
                 self.mix_vertices();
+                println!("{}", a);
                 continue;
             }
 
@@ -189,15 +213,37 @@ impl GWO {
         }
     }
 
-    fn generate_solution(&mut self) -> Vec<Vertex> {
+    fn generate_solution(&mut self, wolf: &mut Wolf) -> Vec<Vertex> {
         let mut new_vertices: Vec<Vertex> = vec![Vertex(0.0, 0.0, 0); self.k];
-        let mut vertices = self.vertices.clone();
 
         for i in 0..self.k {
-            let index: usize = self.r.gen::<usize>() % vertices.len();
-            new_vertices[i] = vertices[index];
-            vertices.remove(index);
+            let index: usize = self.r.gen::<usize>() % wolf.vertices.len();
+            new_vertices[i] = wolf.vertices[index];
+            wolf.vertices.remove(index);
         }
         new_vertices
+    }
+
+    fn plot(&self, wolf: &Wolf, file : String) {
+        let mut document = Document::new().set("width", 116).set("height", 115);
+        let edges = wolf.solution.get_mst_edges();
+        for v in &self.vertices {
+            let circle = Circle::new().set("cx", v.0).set("cy", v.1).set("r", 1);
+            document = document.add(circle);
+        }
+        for edge in edges {
+            let u = edge.u;
+            let v = edge.v;
+            let line = Line::new()
+                .set("x1", u.0)
+                .set("y1", u.1)
+                .set("x2", v.0)
+                .set("y2", v.1)
+                .set("stroke-width", 0.5)
+                .set("stroke", "black");
+
+            document = document.add(line);
+        }
+        svg::save(file, &document).unwrap();
     }
 }

@@ -20,9 +20,9 @@ impl Vertex {
 
 #[derive(Debug, Clone, Copy)]
 pub struct Edge {
-    u: Vertex,
-    v: Vertex,
-    w: f64,
+   pub u: Vertex,
+   pub v: Vertex,
+   pub w: f64,
 }
 
 impl Edge {

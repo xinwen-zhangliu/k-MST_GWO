@@ -46,7 +46,7 @@ footskip=.25in]{geometry}
 \maketitle
 
 \subsection*{El problema del k \'arbol generador de peso m\'inimo}
-La entrada de este problema es una gr\'afica completa no dirigida, sobre la cual se debe encotrar una subconjutno de k v\'ertices los cu\'ales generen un \'arbol de peso m\'inimo en la gr\'afica, entonces el resultado es un conjunto de $k$ v\'ertices y $k-1$ aristas dentro de la gr\'afica. Este problema es NP-duro, con una complejidad polinomial, 
+La entrada de este problema es una gr\'afica completa no dirigida, sobre la cual se debe encotrar una subconjutno de k v\'ertices los cu\'ales generen un \'arbol de peso m\'inimo en la gr\'afica, entonces el resultado es un conjunto de $k$ v\'ertices y $k-1$ aristas dentro de la gr\'afica. Este problema es NP-duro, con una complejidad polinomial.
 
 
 \subsection*{Optimizaci\'on del Lobo Gris / Grey Wolf Optimization}
@@ -77,7 +77,16 @@ El modelo matem\'atico que representa a este algoritmo contiene las siguientes e
 Los vectores $\vec{A} $  y $\vec{C} $ son calculados de la siguente manera.
 \[\vec{A} = 2 \vec{a} \cdot \vec{r}_1 -\vec{a}\]
 \[\vec{C} = 2 \cdot \vec{r}_2\]
-donde $\vec{a} $ es un componente lineal que decrese de 2 a 0, a lo largo de las iteraciones , y $r_1, r_2$ son n\'umeros aleatorios
+donde $\vec{a} $ es un componente lineal que decrese de 2 a 0, a lo largo de las iteraciones , y $r_1, r_2$ son n\'umeros aleatorios.
+
+Los lobos son capaces de reconocer la unibaci\'on de su presa y rodearla. La caza es generalmente
+guiada por el alpha. Sin embargo en un espacio de b\'usqueda abstracto es complicado saaber la
+ubicac\'on de la presa (m\'inimo local). Para modelar este comportamiento de caza, asumimos que el alpha, beta y delta tiene el mayor conocimiento sobre de la ubicaci\'on de la presa. Por esot modificamos  a los dem\'as agentes a incluyendo a los omega a actualizar su ubicaci\'on en base a la de las 3
+mejores soluciones. Para esto se utilizan las siguientes f\'ormulas.
+
+\[\vec{D}_d = |\vec{C}_1\cdot  \vec{X}_d - \vec{X}|\]
+\[\vec{X}_i = \vec{X}_d - \vec{A}_i \cdot \vec{D}_d\]
+\[\vec{X}(t+1)  = \frac{\vec{X}_1 + \vec{X}_2 + \vec{X}_3}{3}\]
 
 
   
@@ -119,7 +128,7 @@ parte de la implementaci\'on fue el refactorizar el c\'odigo para que aceptara v
 coordenadas y pesos de tipo flotante, hacen que muchas de las operaciones sean necesariamente implementadas a mano. 
 
 
-Muchos de los problemas en rust surgen del tiempo de vida de vairables y de la pocesi\'on de estas. Esto lleva a que un c\'odigo m\'as simple requiera de muchas m\'as copias de varibales para no tener
+Muchos de los problemas en rust surgen del tiempo de vida de vairables y de la posesi\'on de estas. Esto lleva a que un c\'odigo m\'as simple requiera de muchas m\'as copias de varibales para no tener
 problemas con lo mencionado anteriormente, esto llea a programas menos optimizdos 
 \section*{Experimentaci\'on y resultados}
 
@@ -134,7 +143,6 @@ Por la manera en que lso lobos toman nuevas posiciones depu\'es de cada iteraci\
 un m\'inimo local y no haya una mayor exploraci\'on.
 
 El promedio de la evaluaci\'on de los resultados encontrados por la heur\'istica sobre los puntos pasados por correo caen en el rango de $50 - 70$. 
-
 
 
 
