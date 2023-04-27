@@ -19,7 +19,6 @@ pub struct GWO {
     r1: StdRng,
     r2: StdRng,
     r3: StdRng,
-    r4: StdRng,
 }
 
 type Type = Uniform<f64>;
@@ -42,7 +41,6 @@ impl GWO {
             r1: StdRng::seed_from_u64(seed + 1),
             r2: StdRng::seed_from_u64(seed + 2),
             r3: StdRng::seed_from_u64(seed + 3),
-            r4: StdRng::seed_from_u64(seed + 4),
         }
     }
 
@@ -108,33 +106,16 @@ impl GWO {
         }
     }
 
-    fn repeated(vertices: &Vec<Vertex>, vertex: &Vertex) -> bool {
-        for i in 0..vertices.len() {
-            if Vertex::equals(&vertices[i], &vertex) {
-                return true;
-            }
-        }
-        false
-    }
-
-    fn binary_search(edges: Vec<Edge>) {}
-
-    fn get_float(&self) -> f64 {
-        0.0
-    }
-
     /// Function that runs the gwo heuristic.
     pub fn run_gwo(&mut self, num_iter: usize, phi: f64) -> Tree {
         let mut best_overall = Wolf {
-                solution: Tree::new(&self.vertices, self.k),
-                vertices: self.vertices.clone(),
-                fitness: f64::INFINITY,
-                position: Vertex::default()
-            };
-        //self.mix_vertices();
-        self.assign_vertices();
+            solution: Tree::new(&self.vertices, self.k),
+            vertices: self.vertices.clone(),
+            fitness: f64::INFINITY,
+            position: Vertex::default(),
+        };
 
-        //self.vertices.sort_by(|a,b| ((a.0+ a.1)/2.0) );
+        self.assign_vertices();
 
         //initializing the pack and its values
         let mut pack: Vec<Wolf> = vec![
@@ -176,12 +157,11 @@ impl GWO {
 
             let new_alpha_fitness = pack[0].fitness;
 
-            //a -= phi;
 
-            if pack[0].fitness < best_overall.fitness{
+            if pack[0].fitness < best_overall.fitness {
                 best_overall = pack[0].clone();
             }
-            
+
             if new_alpha_fitness < previous_alpha_fitness {
                 println!("new alpha {}", new_alpha_fitness);
                 let sol = pack[0].solution.get_mst_edges();
@@ -203,7 +183,7 @@ impl GWO {
                 i = 0;
 
                 a -= phi;
-                self.mix_vertices();
+
                 println!("{}", a);
                 continue;
             }
@@ -215,24 +195,14 @@ impl GWO {
             let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
             self.plot(&pack[i], file);
         }
-        //         let file = "image".to_owned() + &i.to_string() + &".svg".to_owned();
 
-        println!("{:?}\n{}", best_overall.solution.get_mst_edges(), best_overall.fitness);
-            self.plot(&best_overall, "alpha.svg".to_owned());
-        pack[0].solution.clone()
-    }
-
-    fn mix_vertices(&mut self) {
-        for i in 0..self.vertices.len() {
-            let mut index = self.r4.gen::<usize>() % self.vertices.len();
-            while i == index {
-                index = self.r4.gen::<usize>() % self.vertices.len();
-            }
-
-            let temp = self.vertices[i];
-            self.vertices[i] = self.vertices[index];
-            self.vertices[index] = temp;
-        }
+        println!(
+            "{:?}\n F : {}",
+            best_overall.solution.get_mst_edges(),
+            best_overall.fitness
+        );
+        self.plot(&best_overall, "alpha.svg".to_owned());
+        best_overall.solution.clone()
     }
 
     fn assign_vertices(&mut self) {

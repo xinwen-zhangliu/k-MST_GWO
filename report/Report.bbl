@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{rust}
+Rust Lang.
+\newblock The rust programming language.
+\newblock {\em doc.rust-lang.org}, 2017.
+
 \bibitem{MIRJALILI201446}
 Seyedali Mirjalili, Seyed~Mohammad Mirjalili, and Andrew Lewis.
 \newblock Grey wolf optimizer.

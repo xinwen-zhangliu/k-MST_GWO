@@ -1,4 +1,5 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{report}
+\usepackage[font=small,labelfont=bf]{caption}
 \usepackage{listings}
 \usepackage{pgf}
 \usepackage[utf8]{inputenc}
@@ -81,7 +82,9 @@ donde $\vec{a} $ es un componente lineal que decrese de 2 a 0, a lo largo de las
 
 Los lobos son capaces de reconocer la unibaci\'on de su presa y rodearla. La caza es generalmente
 guiada por el alpha. Sin embargo en un espacio de b\'usqueda abstracto es complicado saaber la
-ubicac\'on de la presa (m\'inimo local). Para modelar este comportamiento de caza, asumimos que el alpha, beta y delta tiene el mayor conocimiento sobre de la ubicaci\'on de la presa. Por esot modificamos  a los dem\'as agentes a incluyendo a los omega a actualizar su ubicaci\'on en base a la de las 3
+ubicac\'on de la presa (m\'inimo local). Para modelar este comportamiento de caza, asumimos que el alpha,
+beta y delta tiene el mayor conocimiento sobre de la ubicaci\'on de la presa. Por esot modificamos  a los
+dem\'as agentes a incluyendo a los omega a actualizar su ubicaci\'on en base a la de las 3
 mejores soluciones. Para esto se utilizan las siguientes f\'ormulas.
 
 \[\vec{D}_d = |\vec{C}_1\cdot  \vec{X}_d - \vec{X}|\]
@@ -98,6 +101,11 @@ conjuntos de v\'ertices en cada iteraci\'on de la evoluci\'on de los lobos, para
 y sus funciones asociadas dentro de del struct Tree, y el cual igual regresa el pero asociado al
 \'arbol el cu\'al es la evaluaci\'on de \"fitness\" de cada lobo.
 
+
+La ejecuci\'on del algoritmo est\'a dividida en dos funciones, \texttt{run\_gwo}, el cual se encarga de
+inicializar a la manada, y asignarles soluciones iniciales a cada uno. En cada iteraci\'on esta llama
+a \texttt{evolve} el cual se encarga de modificar cada agente hacia un vecino nuevo.
+
 Dentro del crate Tree, igual se encuentran los structs Edge y Vertex, que representan las aristas de
 la gr\'afica y los v\'ertices respectivamente. Cada Edge est\'as compuesto de dos v\'ertices que
 delimitan cada extremo de la arista, adem\'as de el peso asociado a esta. Los v\'ertices guardan el
@@ -105,6 +113,7 @@ valor de las coordenas en el palno xy, adem\'as de un identificador representado
 
 El struct Reader es el encargado, leer los puntos de un archivo de texto y crear V\'ertices que
 guarden las coordenadas. 
+
 
 
 \section*{Implementaci\'on}
@@ -129,7 +138,7 @@ coordenadas y pesos de tipo flotante, hacen que muchas de las operaciones sean n
 
 
 Muchos de los problemas en rust surgen del tiempo de vida de vairables y de la posesi\'on de estas. Esto lleva a que un c\'odigo m\'as simple requiera de muchas m\'as copias de varibales para no tener
-problemas con lo mencionado anteriormente, esto llea a programas menos optimizdos 
+problemas con lo mencionado anteriormente, esto llega a programas menos optimizados. ~\cite{rust}
 \section*{Experimentaci\'on y resultados}
 
 Las soluciones generadas por la heur\'istica tardan en converger y mejorar los anteriores mientras
@@ -144,12 +153,13 @@ un m\'inimo local y no haya una mayor exploraci\'on.
 
 El promedio de la evaluaci\'on de los resultados encontrados por la heur\'istica sobre los puntos pasados por correo caen en el rango de $50 - 70$. 
 
-El haber implementado la graficaci\'on de las soluciones ayud\'o el tipo de soluciones generadas y 
-
+El haber implementado la graficaci\'on de las soluciones ayud\'o mucho a la depuraci\'on del programa, pudiendo ver visualmente las soluciones generadas. 
 
  Despu\'es de observar varias gr\'aficas generadas a lo largo de la ejecuci\'on, se not\'o que las gr\'aficas de las primeras iteraciones siempre segu\'ian una forma m\'as esparcida
 en el espacio de b\'usqueda, sin embargo al continuar con la ejecuc\'i\'on y al ir mejorando las
-soluciones, las gr\'aficas terminaban teniendo una forma m\'as compacta a las iniciales. Sin embargo, por
+soluciones, las gr\'aficas terminaban teniendo una forma m\'as compacta a las iniciales. Sin embargo, por la
+aleatoridad de la heur\'istica no se pod\'ia asegurar que a trav\'es de las ejecuciones cada soluciones buscara su forma m\'as compacta en un espacio de b\'usqueda local, lo que llevaba a no poder encontrar un m\'inimo
+local.
 
 
 Para solucionar esto se implement\'o una manera diferente de seleccionar los vecinos en cada iteraci\'on. Primero se busca el centro geom\'etrico de la gr\'aafica y a partir de esto se compara con
@@ -160,6 +170,11 @@ manera cada agente llega exaustivamente a un m\'inimo local.
 
 Con esto se logr\'o que las soluciones encontradas bajaran de un peso de $50-70$ para el conjunto
 original de puntos, a poder encontrar la soluci\'on \'optima de 30.
+
+\includegraphics[width=\textwidth]{alpha.pdf}
+\captionof{figure}{Grafica de soluc\'on con los puntos de t3.txt, evaluaci\'on 57.64}
+
+
 
 \section*{Conclusiones}
 La planeaci\'on en este caso podr\'ia haberse visto avanzada con la implementaci\'on del programa,
@@ -172,6 +187,7 @@ c\'odigo para que la calidad de los resultados sea cada vez m\'as alta. Es por e
 Por la falta de tiempo la optimización del sistema fue escaza, por lo que el experimentar fue m\'as
 tardado de lo normal.
 
+Aunque el programa ecuentre soluciones favorables, sigue teniendo una falta de exploraci\'on y cada agente cae en su m\'inimo local r\'apidamente. Por lo que las soluciones dependen de las soluciones aleatorias iniciales.
 
 \bibliography{citations}{}
 \bibliographystyle{plain}

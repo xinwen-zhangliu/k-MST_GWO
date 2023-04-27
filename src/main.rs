@@ -59,24 +59,6 @@ fn main() {
     sub_vertices[..].clone_from_slice(&vertices[..10]);
     let mut t = Tree::new(&vertices, 150);
 
-    // gwo.run_gwo(1);
-    //let mut gwo = GWO::new(10, vertices.clone(), 10, 54);
-    //let mut gwo = GWO::new(10, vertices.clone(), 10, 3); 51
-    //let mut gwo = GWO::new(15, vertices.clone(), 10, 4295);
-
-
-    //57.515
-      //  let mut gwo = GWO::new(10, vertices.clone(), 10, 9572);
-    // let solution = gwo.run_gwo(1000, 0.01);
-
-           let mut gwo = GWO::new(15, vertices.clone(), 10, 43290);
-    let solution = gwo.run_gwo(1000, 0.01);
-
-
-    
-
-
-
-    // println!("{}", &solution.get_weight());
-    // println!("{:?}", &solution.get_mst_edges());
+    let mut gwo = GWO::new(15, vertices.clone(), 10, 5849);
+    let solution = gwo.run_gwo(1000, 0.005);
 }

@@ -149,13 +149,13 @@
 <circle cx="92.9393" cy="72.3926" r="1"/>
 <circle cx="62.7973" cy="90.5221" r="1"/>
 <circle cx="93.7059" cy="54.0921" r="1"/>
-<line stroke="black" stroke-width="0.5" x1="69.2017" x2="64.99" y1="32.8606" y2="37.9255"/>
-<line stroke="black" stroke-width="0.5" x1="79.328" x2="72.5003" y1="24.4347" y2="23.7944"/>
-<line stroke="black" stroke-width="0.5" x1="65.3391" x2="58.4272" y1="23.3756" y2="24.1571"/>
-<line stroke="black" stroke-width="0.5" x1="65.3391" x2="72.5003" y1="23.3756" y2="23.7944"/>
-<line stroke="black" stroke-width="0.5" x1="70.0866" x2="64.99" y1="43.123" y2="37.9255"/>
-<line stroke="black" stroke-width="0.5" x1="69.2017" x2="76.6026" y1="32.8606" y2="32.6663"/>
-<line stroke="black" stroke-width="0.5" x1="59.6637" x2="58.4272" y1="31.5314" y2="24.1571"/>
-<line stroke="black" stroke-width="0.5" x1="76.6026" x2="77.446" y1="32.6663" y2="40.4127"/>
-<line stroke="black" stroke-width="0.5" x1="59.6637" x2="64.99" y1="31.5314" y2="37.9255"/>
+<line stroke="black" stroke-width="0.5" x1="81.3508" x2="86.2288" y1="79.3442" y2="82.8974"/>
+<line stroke="black" stroke-width="0.5" x1="79.2301" x2="76.5229" y1="70.9432" y2="65.4925"/>
+<line stroke="black" stroke-width="0.5" x1="89.4315" x2="92.9393" y1="77.421" y2="72.3926"/>
+<line stroke="black" stroke-width="0.5" x1="89.4315" x2="86.2288" y1="77.421" y2="82.8974"/>
+<line stroke="black" stroke-width="0.5" x1="86.1947" x2="92.9393" y1="71.3678" y2="72.3926"/>
+<line stroke="black" stroke-width="0.5" x1="79.2301" x2="86.1947" y1="70.9432" y2="71.3678"/>
+<line stroke="black" stroke-width="0.5" x1="92.9393" x2="94.1504" y1="72.3926" y2="65.5095"/>
+<line stroke="black" stroke-width="0.5" x1="84.5358" x2="86.1947" y1="64.3491" y2="71.3678"/>
+<line stroke="black" stroke-width="0.5" x1="81.3508" x2="66.2431" y1="79.3442" y2="85.403"/>
 </svg>
