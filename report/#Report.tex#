@@ -155,7 +155,9 @@ La experimentaci\'on no s\'olo conlleva a encontrar mejores resutlados sino igua
 c\'odigo para que la calidad de los resultados sea cada vez m\'as alta. Es por esto que
 
 Por la falta de tiempo la optimización del sistema fue escaza, por lo que el experimentar fue m\'as
-tardado de lo normal.
+tardado de lo normal. Despu\'es de observar varias gr\'aficas generadas a lo largo de la ejecuci\'on, se not\'o que las gr\'aficas de las primeras iteraciones siempre segu\'ian una forma m\'as esparcida
+en el espacio de b\'usqueda, sin embargo al continuar con la ejecuc\'i\'on y al ir mejorando las
+soluciones, las gr\'aficas terminaban teniendo una forma m\'as compacta a las iniciales. Sin embargo, por 
 
 
 \bibliography{citations}{}

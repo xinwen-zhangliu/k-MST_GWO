@@ -183,9 +183,25 @@ impl Tree {
     pub fn set_vertices(&mut self, vertices: &Vec<Vertex>) {
         self.vertices = vertices.clone();
     }
+    pub fn get_vertices(&self) -> Vec<Vertex>{
+        self.vertices.clone()
+    }
 
     pub fn overwrite_vertex(&mut self, index : usize, vertex : Vertex){
         self.vertices[index] = vertex
+    }
+
+
+    fn get_center(){
+        
+    }
+    
+    pub fn overwrite_farthest(){
+
+    }
+    
+    pub fn get_vertex(&self, index: usize)-> Vertex{
+        self.vertices[index].clone()
     }
     
     pub fn overwrite_edge(&mut self, index : usize, edge : Edge) {

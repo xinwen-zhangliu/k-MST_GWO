@@ -63,13 +63,17 @@ fn main() {
     //let mut gwo = GWO::new(10, vertices.clone(), 10, 54);
     //let mut gwo = GWO::new(10, vertices.clone(), 10, 3); 51
     //let mut gwo = GWO::new(15, vertices.clone(), 10, 4295);
-       let mut gwo = GWO::new(10, vertices.clone(), 10, 548);
-    let solution = gwo.run_gwo(10000, 0.01);
 
-    let mut vec = vec![0usize; 5];
-    println!("{}", vec.len());
-    vec.remove(0);
-    println!("{}", vec.len());
+
+    //57.515
+      //  let mut gwo = GWO::new(10, vertices.clone(), 10, 9572);
+    // let solution = gwo.run_gwo(1000, 0.01);
+
+           let mut gwo = GWO::new(15, vertices.clone(), 10, 5849);
+    let solution = gwo.run_gwo(1000, 0.1);
+
+
+    
 
 
 
